@@ -1,7 +1,9 @@
+// src/app/layout.tsx
 import type { Metadata } from "next"
 import { Geist } from "next/font/google"
 import Sidebar from "@/components/Sidebar"
 import TopNav from "@/components/TopNav"
+import { CapTableProvider } from "@/context/CapTableContext"
 import "./globals.css"
 
 const geist = Geist({
@@ -23,15 +25,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={geist.className}>
-        <div className="min-h-screen flex">
-          <Sidebar />
-          <div className="flex-1 flex flex-col">
-            <TopNav />
-            <main className="flex-1 bg-white">
-              {children}
-            </main>
+        <CapTableProvider>
+          <div className="min-h-screen flex">
+            <Sidebar />
+            <div className="flex-1 flex flex-col">
+              <TopNav />
+              <main className="flex-1 bg-white">
+                {children}
+              </main>
+            </div>
           </div>
-        </div>
+        </CapTableProvider>
       </body>
     </html>
   )

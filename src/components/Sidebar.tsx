@@ -3,15 +3,15 @@
 import React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { FileText, PieChart, Home } from "lucide-react"
+import { FileText, PieChart, Home, DollarSign } from "lucide-react"
 
 export default function Sidebar() {
   const pathname = usePathname()
-  console.log('Current pathname:', pathname) // Debug current path
 
   const menuItems = [
     { title: "Home", icon: Home, href: "/" },
     { title: "Documents", icon: FileText, href: "/documents" },
+    { title: "SAFEs", icon: DollarSign, href: "/safes" },
     { title: "Cap Tables", icon: PieChart, href: "/cap-tables" },
   ]
 
@@ -24,8 +24,7 @@ export default function Sidebar() {
         <nav className="space-y-1">
           {menuItems.map((item) => {
             const isActive = pathname === item.href
-            console.log(`Menu item ${item.title}:`, { href: item.href, isActive }) // Debug menu items
-
+            
             return (
               <Link
                 key={item.href}
