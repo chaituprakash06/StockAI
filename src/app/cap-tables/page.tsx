@@ -274,15 +274,16 @@ export default function CapTables() {
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Cap Table Management</h1>
+    <div className="p-4 md:p-6">
+      <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">Cap Table Management</h1>
       
-      <div className="flex gap-2 mb-6">
+      {/* Round Selection Tabs - Scrollable on mobile */}
+      <div className="flex gap-2 mb-4 md:mb-6 overflow-x-auto pb-2 -mx-1 px-1">
         {rounds.map((round: Round) => (
           <button
             key={round.name}
             onClick={() => setSelectedRound(round)}
-            className={`px-4 py-2 rounded-md ${
+            className={`px-3 md:px-4 py-2 rounded-md flex-shrink-0 text-sm md:text-base ${
               selectedRound.name === round.name
                 ? "bg-black text-white"
                 : "bg-white border hover:bg-gray-50"
@@ -293,248 +294,245 @@ export default function CapTables() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-6">
-          <div className="p-6 bg-white rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-4">Round Details</h2>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm mb-1">Investment Amount ($)</label>
-                <input
-                  name="amount"
-                  type="number"
-                  className="w-full p-2 border rounded-md"
-                  value={selectedRound.amount}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">Post-Money Valuation ($)</label>
-                <input
-                  name="valuation"
-                  type="number"
-                  className="w-full p-2 border rounded-md"
-                  value={selectedRound.valuation}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">Investor Name</label>
-                <input
-                  name="newInvestor"
-                  className="w-full p-2 border rounded-md"
-                  value={selectedRound.newInvestor}
-                  onChange={handleInputChange}
-                />
-              </div>
-              
-              {/* SAFE conversion option */}
-              <div className="flex items-center gap-2 py-2">
-                <input
-                  type="checkbox"
-                  id="includeSafes"
-                  checked={selectedRound.includeSafes}
-                  onChange={toggleSafeInclusion}
-                  className="h-4 w-4 text-black"
-                />
-                <label htmlFor="includeSafes" className="text-sm">
-                  Convert existing SAFEs in this round
-                </label>
-                <div className="relative group">
-                  <Info className="h-4 w-4 text-gray-400" />
-                  <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs p-2 rounded w-48">
-                    SAFEs will convert based on their valuation cap and/or discount rate terms.
-                  </div>
-                </div>
-              </div>
-              
-              {/* Show SAFE info if selected */}
-              {selectedRound.includeSafes && safes.length > 0 && (
-                <div className="bg-gray-50 p-3 rounded text-sm">
-                  <h3 className="font-medium mb-2">SAFE Conversion Preview</h3>
-                  <ul className="space-y-2">
-                    {safes.map(safe => {
-                      const conversion = calculateSafeConversion(
-                        safe.amount,
-                        safe.valuationCap,
-                        safe.discountRate,
-                        Number(selectedRound.valuation)
-                      )
-                      
-                      return (
-                        <li key={safe.id} className="flex justify-between">
-                          <span>{safe.investorName}</span>
-                          <span className="font-medium">
-                            {conversion && Number(selectedRound.valuation) 
-                              ? `~${conversion.ownershipPercentage.toFixed(2)}%` 
-                              : 'N/A'}
-                          </span>
-                        </li>
-                      )
-                    })}
-                  </ul>
-                </div>
-              )}
-              
-              {/* Show message if no SAFEs exist */}
-              {selectedRound.includeSafes && safes.length === 0 && (
-                <div className="text-sm text-amber-600">
-                  No SAFEs found. Add SAFEs in the SAFEs section to include them in this round.
-                </div>
-              )}
-              
-              <button 
-                onClick={generateCapTable}
-                className="w-full px-4 py-2 bg-black text-white rounded-md"
-              >
-                Generate Cap Table
-              </button>
+      <div className="grid grid-cols-1 gap-4 md:gap-6">
+        {/* Round Details Section */}
+        <div className="p-4 md:p-6 bg-white rounded-lg shadow">
+          <h2 className="text-lg md:text-xl font-semibold mb-3 md:mb-4">Round Details</h2>
+          <div className="space-y-3 md:space-y-4">
+            <div>
+              <label className="block text-sm mb-1">Investment Amount ($)</label>
+              <input
+                name="amount"
+                type="number"
+                className="w-full p-2 border rounded-md text-sm md:text-base"
+                value={selectedRound.amount}
+                onChange={handleInputChange}
+              />
             </div>
+            <div>
+              <label className="block text-sm mb-1">Post-Money Valuation ($)</label>
+              <input
+                name="valuation"
+                type="number"
+                className="w-full p-2 border rounded-md text-sm md:text-base"
+                value={selectedRound.valuation}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div>
+              <label className="block text-sm mb-1">Investor Name</label>
+              <input
+                name="newInvestor"
+                className="w-full p-2 border rounded-md text-sm md:text-base"
+                value={selectedRound.newInvestor}
+                onChange={handleInputChange}
+              />
+            </div>
+            
+            {/* SAFE conversion option */}
+            <div className="flex items-center gap-2 py-1 md:py-2">
+              <input
+                type="checkbox"
+                id="includeSafes"
+                checked={selectedRound.includeSafes}
+                onChange={toggleSafeInclusion}
+                className="h-4 w-4 text-black"
+              />
+              <label htmlFor="includeSafes" className="text-sm">
+                Convert existing SAFEs in this round
+              </label>
+              <div className="relative group">
+                <Info className="h-4 w-4 text-gray-400" />
+                <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs p-2 rounded w-48 z-10">
+                  SAFEs will convert based on their valuation cap and/or discount rate terms.
+                </div>
+              </div>
+            </div>
+            
+            {/* Show SAFE info if selected */}
+            {selectedRound.includeSafes && safes.length > 0 && (
+              <div className="bg-gray-50 p-3 rounded text-xs md:text-sm">
+                <h3 className="font-medium mb-2">SAFE Conversion Preview</h3>
+                <ul className="space-y-1 md:space-y-2">
+                  {safes.map(safe => {
+                    const conversion = calculateSafeConversion(
+                      safe.amount,
+                      safe.valuationCap,
+                      safe.discountRate,
+                      Number(selectedRound.valuation)
+                    )
+                    
+                    return (
+                      <li key={safe.id} className="flex justify-between">
+                        <span>{safe.investorName}</span>
+                        <span className="font-medium">
+                          {conversion && Number(selectedRound.valuation) 
+                            ? `~${conversion.ownershipPercentage.toFixed(2)}%` 
+                            : 'N/A'}
+                        </span>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+            )}
+            
+            {/* Show message if no SAFEs exist */}
+            {selectedRound.includeSafes && safes.length === 0 && (
+              <div className="text-xs md:text-sm text-amber-600">
+                No SAFEs found. Add SAFEs in the SAFEs section to include them in this round.
+              </div>
+            )}
+            
+            <button 
+              onClick={generateCapTable}
+              className="w-full px-4 py-2 bg-black text-white rounded-md text-sm md:text-base"
+            >
+              Generate Cap Table
+            </button>
           </div>
-          
-          {/* Round Summary/Metrics */}
-          {selectedRound.capTable.length > 0 && selectedRound.valuation && (
-            <div className="p-6 bg-white rounded-lg shadow">
-              <h2 className="text-xl font-semibold mb-4">Round Summary</h2>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-gray-500">Investment Amount:</span>
-                  <span className="font-medium">{formatCurrency(selectedRound.amount)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500">Post-Money Valuation:</span>
-                  <span className="font-medium">{formatCurrency(selectedRound.valuation)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500">Pre-Money Valuation:</span>
-                  <span className="font-medium">
-                    {formatCurrency(Number(selectedRound.valuation) - Number(selectedRound.amount))}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500">New Investor Ownership:</span>
-                  <span className="font-medium">
-                    {selectedRound.capTable.find(r => r.name === selectedRound.newInvestor)?.percentage.toFixed(2)}%
-                  </span>
-                </div>
-                {selectedRound.includeSafes && safes.length > 0 && (
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">SAFE Conversion Total:</span>
-                    <span className="font-medium">
-                      {selectedRound.capTable
-                        .filter(r => r.name.startsWith('SAFE:'))
-                        .reduce((sum, r) => sum + r.percentage, 0)
-                        .toFixed(2)}%
-                    </span>
-                  </div>
-                )}
-                <div className="flex justify-between">
-                  <span className="text-gray-500">Founder Dilution:</span>
-                  <span className="font-medium">
-                    {selectedRound.capTable.find(r => r.name === "Founder") ?
-                      (100 - Number(selectedRound.capTable.find(r => r.name === "Founder")?.percentage.toFixed(2))).toFixed(2) + "%" :
-                      "N/A"}
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
-
-        <div className="space-y-6">
-          {/* Current Cap Table Section */}
-          <div className="p-6 bg-white rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-4">Current Cap Table</h2>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="text-left border-b">
-                    <th className="pb-2">Shareholder</th>
-                    <th className="pb-2 text-right">Shares</th>
-                    <th className="pb-2 text-right">Ownership</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {initialCapTable.length > 0 ? (
-                    initialCapTable.map((row, index) => (
-                      <tr key={index} className="border-b">
-                        <td className="py-2">{row.name}</td>
-                        <td className="py-2 text-right">{row.shares.toLocaleString()}</td>
-                        <td className="py-2 text-right">{row.percentage.toFixed(2)}%</td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={3} className="py-4 text-center text-gray-500">
-                        No data available. Add shareholders in Documents section.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          
-          {/* Projected Cap Table Section */}
-          <div className="p-6 bg-white rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-4">Projected Cap Table</h2>
-            <div className="overflow-x-auto">
-              <table className="w-full mb-6">
-                <thead>
-                  <tr className="text-left border-b">
-                    <th className="pb-2">Shareholder</th>
-                    <th className="pb-2 text-right">Shares</th>
-                    <th className="pb-2 text-right">Ownership</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {selectedRound.capTable.length > 0 ? (
-                    selectedRound.capTable.map((row, index) => (
-                      <tr key={index} className="border-b">
-                        <td className="py-2">{row.name}</td>
-                        <td className="py-2 text-right">{row.shares.toLocaleString()}</td>
-                        <td className="py-2 text-right">{row.percentage.toFixed(2)}%</td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={3} className="py-4 text-center text-gray-500">
-                        Generate cap table to see projections
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-              
-              {/* Pie Chart for Projected Cap Table */}
-              {selectedRound.capTable.length > 0 && (
-                <div className="h-64 mt-4">
-                  <h3 className="text-sm font-medium text-gray-500 mb-2">Ownership Distribution</h3>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={getChartData(selectedRound.capTable)}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        label={({name, percent}) => `${name}: ${(percent * 100).toFixed(1)}%`}
-                        outerRadius={80}
-                        fill="#8884d8"
-                        dataKey="value"
-                      >
-                        {getChartData(selectedRound.capTable).map((entry: ChartDataItem, index: number) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                      </Pie>
-                      <Tooltip 
-                        formatter={(value) => `${Number(value).toFixed(2)}%`}
-                      />
-                      <Legend />
-                    </PieChart>
-                  </ResponsiveContainer>
+        
+        {/* Round Summary/Metrics */}
+        {selectedRound.capTable.length > 0 && selectedRound.valuation && (
+          <div className="p-4 md:p-6 bg-white rounded-lg shadow">
+            <h2 className="text-lg md:text-xl font-semibold mb-3 md:mb-4">Round Summary</h2>
+            <div className="space-y-2 text-sm md:text-base">
+              <div className="flex justify-between">
+                <span className="text-gray-500">Investment Amount:</span>
+                <span className="font-medium">{formatCurrency(selectedRound.amount)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Post-Money Valuation:</span>
+                <span className="font-medium">{formatCurrency(selectedRound.valuation)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Pre-Money Valuation:</span>
+                <span className="font-medium">
+                  {formatCurrency(Number(selectedRound.valuation) - Number(selectedRound.amount))}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">New Investor Ownership:</span>
+                <span className="font-medium">
+                  {selectedRound.capTable.find(r => r.name === selectedRound.newInvestor)?.percentage.toFixed(2)}%
+                </span>
+              </div>
+              {selectedRound.includeSafes && safes.length > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-gray-500">SAFE Conversion Total:</span>
+                  <span className="font-medium">
+                    {selectedRound.capTable
+                      .filter(r => r.name.startsWith('SAFE:'))
+                      .reduce((sum, r) => sum + r.percentage, 0)
+                      .toFixed(2)}%
+                  </span>
                 </div>
               )}
+              <div className="flex justify-between">
+                <span className="text-gray-500">Founder Dilution:</span>
+                <span className="font-medium">
+                  {selectedRound.capTable.find(r => r.name === "Founder") ?
+                    (100 - Number(selectedRound.capTable.find(r => r.name === "Founder")?.percentage.toFixed(2))).toFixed(2) + "%" :
+                    "N/A"}
+                </span>
+              </div>
             </div>
+          </div>
+        )}
+
+        {/* Current Cap Table Section */}
+        <div className="p-4 md:p-6 bg-white rounded-lg shadow overflow-hidden">
+          <h2 className="text-lg md:text-xl font-semibold mb-3 md:mb-4">Current Cap Table</h2>
+          <div className="overflow-x-auto -mx-4 md:mx-0 px-4 md:px-0">
+            <table className="w-full min-w-[500px]">
+              <thead>
+                <tr className="text-left border-b">
+                  <th className="pb-2 text-sm md:text-base">Shareholder</th>
+                  <th className="pb-2 text-right text-sm md:text-base">Shares</th>
+                  <th className="pb-2 text-right text-sm md:text-base">Ownership</th>
+                </tr>
+              </thead>
+              <tbody>
+                {initialCapTable.length > 0 ? (
+                  initialCapTable.map((row, index) => (
+                    <tr key={index} className="border-b">
+                      <td className="py-2 text-sm md:text-base">{row.name}</td>
+                      <td className="py-2 text-right text-sm md:text-base">{row.shares.toLocaleString()}</td>
+                      <td className="py-2 text-right text-sm md:text-base">{row.percentage.toFixed(2)}%</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={3} className="py-4 text-center text-gray-500 text-sm md:text-base">
+                      No data available. Add shareholders in Documents section.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        {/* Projected Cap Table Section */}
+        <div className="p-4 md:p-6 bg-white rounded-lg shadow overflow-hidden">
+          <h2 className="text-lg md:text-xl font-semibold mb-3 md:mb-4">Projected Cap Table</h2>
+          <div className="overflow-x-auto -mx-4 md:mx-0 px-4 md:px-0">
+            <table className="w-full min-w-[500px] mb-4 md:mb-6">
+              <thead>
+                <tr className="text-left border-b">
+                  <th className="pb-2 text-sm md:text-base">Shareholder</th>
+                  <th className="pb-2 text-right text-sm md:text-base">Shares</th>
+                  <th className="pb-2 text-right text-sm md:text-base">Ownership</th>
+                </tr>
+              </thead>
+              <tbody>
+                {selectedRound.capTable.length > 0 ? (
+                  selectedRound.capTable.map((row, index) => (
+                    <tr key={index} className="border-b">
+                      <td className="py-2 text-sm md:text-base">{row.name}</td>
+                      <td className="py-2 text-right text-sm md:text-base">{row.shares.toLocaleString()}</td>
+                      <td className="py-2 text-right text-sm md:text-base">{row.percentage.toFixed(2)}%</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={3} className="py-4 text-center text-gray-500 text-sm md:text-base">
+                      Generate cap table to see projections
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+            
+            {/* Pie Chart for Projected Cap Table */}
+            {selectedRound.capTable.length > 0 && (
+              <div className="h-64 md:h-80 mt-4">
+                <h3 className="text-xs md:text-sm font-medium text-gray-500 mb-2">Ownership Distribution</h3>
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={getChartData(selectedRound.capTable)}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({name, percent}) => `${name.length > 10 ? name.substring(0, 10) + '...' : name}: ${(percent * 100).toFixed(1)}%`}
+                      outerRadius="80%"
+                      fill="#8884d8"
+                      dataKey="value"
+                    >
+                      {getChartData(selectedRound.capTable).map((entry: ChartDataItem, index: number) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip 
+                      formatter={(value) => `${Number(value).toFixed(2)}%`}
+                    />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            )}
           </div>
         </div>
       </div>

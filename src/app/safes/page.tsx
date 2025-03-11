@@ -103,20 +103,20 @@ export default function SAFEsPage() {
   }
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6">SAFE Investments</h1>
+    <div className="p-4 md:p-8">
+      <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">SAFE Investments</h1>
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6">
         {/* Add new SAFE */}
-        <div className="p-6 bg-white rounded-lg border shadow-sm">
-          <h2 className="text-xl font-semibold mb-4">Add New SAFE</h2>
-          <div className="space-y-4">
+        <div className="p-4 md:p-6 bg-white rounded-lg border shadow-sm">
+          <h2 className="text-lg md:text-xl font-semibold mb-3 md:mb-4">Add New SAFE</h2>
+          <div className="space-y-3 md:space-y-4">
             <div>
               <label className="block text-sm mb-1">Investor Name</label>
               <input
                 name="investorName"
                 type="text"
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border rounded-md text-sm md:text-base"
                 value={newSafe.investorName}
                 onChange={handleInputChange}
                 placeholder="Enter investor name"
@@ -128,7 +128,7 @@ export default function SAFEsPage() {
               <input
                 name="amount"
                 type="number"
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border rounded-md text-sm md:text-base"
                 value={newSafe.amount || ''}
                 onChange={handleInputChange}
                 placeholder="Enter investment amount"
@@ -140,7 +140,7 @@ export default function SAFEsPage() {
               <input
                 name="date"
                 type="date"
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border rounded-md text-sm md:text-base"
                 value={newSafe.date}
                 onChange={handleInputChange}
               />
@@ -150,7 +150,7 @@ export default function SAFEsPage() {
               <label className="block text-sm mb-1">SAFE Type</label>
               <select
                 name="type"
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border rounded-md text-sm md:text-base"
                 value={newSafe.type}
                 onChange={handleInputChange}
               >
@@ -167,7 +167,7 @@ export default function SAFEsPage() {
                 <input
                   name="valuationCap"
                   type="number"
-                  className="w-full p-2 border rounded-md"
+                  className="w-full p-2 border rounded-md text-sm md:text-base"
                   value={newSafe.valuationCap || ''}
                   onChange={handleInputChange}
                   placeholder="Enter valuation cap"
@@ -181,7 +181,7 @@ export default function SAFEsPage() {
                 <input
                   name="discountRate"
                   type="number"
-                  className="w-full p-2 border rounded-md"
+                  className="w-full p-2 border rounded-md text-sm md:text-base"
                   value={newSafe.discountRate || ''}
                   onChange={handleInputChange}
                   placeholder="Enter discount rate (e.g. 20)"
@@ -193,7 +193,7 @@ export default function SAFEsPage() {
             
             <button
               onClick={addSafe}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 text-sm md:text-base"
             >
               <PlusCircle className="h-4 w-4" />
               <span>Add SAFE</span>
@@ -203,32 +203,33 @@ export default function SAFEsPage() {
         
         {/* List of SAFEs */}
         <div>
-          <h2 className="text-xl font-semibold mb-4">Your SAFE Investments</h2>
+          <h2 className="text-lg md:text-xl font-semibold mb-3 md:mb-4">Your SAFE Investments</h2>
           
           {safes.length === 0 ? (
-            <div className="p-6 bg-white rounded-lg border shadow-sm text-center">
-              <p className="text-gray-500">No SAFEs added yet</p>
+            <div className="p-4 md:p-6 bg-white rounded-lg border shadow-sm text-center">
+              <p className="text-gray-500 text-sm md:text-base">No SAFEs added yet</p>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3 md:space-y-4">
               {safes.map((safe) => (
-                <div key={safe.id} className="p-4 bg-white rounded-lg border shadow-sm">
+                <div key={safe.id} className="p-3 md:p-4 bg-white rounded-lg border shadow-sm">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="font-medium">{safe.investorName}</h3>
-                      <p className="text-sm text-gray-500">
+                      <h3 className="font-medium text-sm md:text-base">{safe.investorName}</h3>
+                      <p className="text-xs md:text-sm text-gray-500">
                         {new Date(safe.date).toLocaleDateString()}
                       </p>
                     </div>
                     <button
                       onClick={() => removeSafe(safe.id)}
                       className="text-red-500 hover:text-red-700"
+                      aria-label="Remove SAFE"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
                   </div>
                   
-                  <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
+                  <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-1 md:gap-2 text-xs md:text-sm">
                     <div>
                       <span className="text-gray-500">Amount:</span>{' '}
                       <span className="font-medium">{formatCurrency(safe.amount)}</span>
