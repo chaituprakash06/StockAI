@@ -1,4 +1,3 @@
-// src/app/safes/page.tsx
 "use client"
 
 import React, { useState } from "react"
@@ -15,8 +14,12 @@ type SAFE = {
   type: 'valuation-cap' | 'discount' | 'mfn' | 'both'
 }
 
+type Error = {
+  message: string
+}
+
 export default function SAFEsPage() {
-  const { safes, setSafes } = useCapTable()
+  const { safes, setSafes, saveSafeToDatabase, deleteSafeFromDatabase } = useCapTable()
   const [newSafe, setNewSafe] = useState<SAFE>({
     id: "",
     investorName: "",
@@ -33,13 +36,13 @@ export default function SAFEsPage() {
     if (name === 'type') {
       // Reset values based on SAFE type
       if (value === 'valuation-cap') {
-        setNewSafe(prev => ({ ...prev, type: value as any, discountRate: null }))
+        setNewSafe(prev => ({ ...prev, type: value as 'valuation-cap', discountRate: null }))
       } else if (value === 'discount') {
-        setNewSafe(prev => ({ ...prev, type: value as any, valuationCap: null }))
+        setNewSafe(prev => ({ ...prev, type: value as 'discount', valuationCap: null }))
       } else if (value === 'both') {
-        setNewSafe(prev => ({ ...prev, type: value as any }))
+        setNewSafe(prev => ({ ...prev, type: value as 'both' }))
       } else {
-        setNewSafe(prev => ({ ...prev, type: value as any, valuationCap: null, discountRate: null }))
+        setNewSafe(prev => ({ ...prev, type: value as 'mfn', valuationCap: null, discountRate: null }))
       }
     } else if (name === 'valuationCap' || name === 'amount' || name === 'discountRate') {
       setNewSafe(prev => ({ ...prev, [name]: value ? Number(value) : null }))
@@ -48,7 +51,7 @@ export default function SAFEsPage() {
     }
   }
   
-  const addSafe = () => {
+  const addSafe = async () => {
     // Validate
     if (!newSafe.investorName || !newSafe.amount) {
       alert("Please enter investor name and investment amount")
@@ -76,7 +79,14 @@ export default function SAFEsPage() {
       id: Date.now().toString()
     }
     
-    setSafes([...safes, safeToAdd])
+    try {
+      await saveSafeToDatabase(safeToAdd)
+      setSafes([...safes, safeToAdd])
+    } catch (error) {
+      const typedError = error as Error
+      console.error('Error adding SAFE:', typedError.message)
+      alert(`Failed to save SAFE: ${typedError.message}`)
+    }
     
     // Reset form
     setNewSafe({
@@ -90,8 +100,15 @@ export default function SAFEsPage() {
     })
   }
   
-  const removeSafe = (id: string) => {
-    setSafes(safes.filter(safe => safe.id !== id))
+  const removeSafe = async (id: string) => {
+    try {
+      await deleteSafeFromDatabase(id)
+      setSafes(safes.filter(safe => safe.id !== id))
+    } catch (error) {
+      const typedError = error as Error
+      console.error('Error removing SAFE:', typedError.message)
+      alert(`Failed to remove SAFE: ${typedError.message}`)
+    }
   }
   
   const formatCurrency = (amount: number) => {

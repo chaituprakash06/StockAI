@@ -1,4 +1,3 @@
-// src/app/documents/page.tsx
 "use client"
 
 import React, { useState } from "react"
@@ -11,8 +10,8 @@ type Shareholder = {
 }
 
 export default function DocumentsPage() {
+  const { initialShareholders, setInitialShareholders, saveShareholdersToDatabase } = useCapTable()
   const [activeTab, setActiveTab] = useState<'upload' | 'manual'>('upload')
-  const { initialShareholders, setInitialShareholders } = useCapTable()
 
   const addShareholder = () => {
     setInitialShareholders([...initialShareholders, { name: "", shares: "", percentage: "" }])
@@ -44,9 +43,8 @@ export default function DocumentsPage() {
     setInitialShareholders(newShareholders)
   }
 
-  const saveCapTable = () => {
-    console.log('Saving cap table:', initialShareholders)
-    // Data is already saved in context
+  const saveCapTable = async () => {
+    await saveShareholdersToDatabase()
     alert('Cap table saved!')
   }
 
@@ -96,7 +94,7 @@ export default function DocumentsPage() {
         <div className="max-w-4xl">
           <div className="p-6 bg-white rounded-lg border shadow-sm">
             <h2 className="text-xl font-semibold mb-4">Initial Cap Table</h2>
-            <p className="text-gray-500 mb-6">Enter your company's current ownership structure</p>
+            <p className="text-gray-500 mb-6">Enter your company&apos;s current ownership structure</p>
             
             <div className="overflow-x-auto">
               <table className="w-full mb-4">
