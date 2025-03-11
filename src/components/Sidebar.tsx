@@ -47,7 +47,7 @@ export default function Sidebar() {
         `}
       >
         <div className="p-4">
-          <Link href="/" className="block" onClick={() => setIsMobileMenuOpen(false)}>
+          <Link href="/" className="block logo-container" onClick={() => setIsMobileMenuOpen(false)}>
             <h1 className="text-xl font-bold mb-6">StockAI</h1>
           </Link>
           <nav className="space-y-1">
@@ -75,6 +75,15 @@ export default function Sidebar() {
 
       {/* Spacer for mobile to push content down */}
       <div className="md:hidden h-16"></div>
+
+      {/* Add global styles for the logo margin */}
+      <style jsx global>{`
+        @media (max-width: 720px) {
+          .logo-container {
+            margin-left: 20px;
+          }
+        }
+      `}</style>
     </>
   )
 }
