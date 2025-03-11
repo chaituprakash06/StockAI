@@ -14,10 +14,6 @@ type SAFE = {
   type: 'valuation-cap' | 'discount' | 'mfn' | 'both'
 }
 
-type Error = {
-  message: string
-}
-
 export default function SAFEsPage() {
   const { safes, setSafes } = useCapTable()
   const [newSafe, setNewSafe] = useState<SAFE>({
