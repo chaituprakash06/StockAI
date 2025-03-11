@@ -10,7 +10,7 @@ type Shareholder = {
 }
 
 export default function DocumentsPage() {
-  const { initialShareholders, setInitialShareholders, saveShareholdersToDatabase } = useCapTable()
+  const { initialShareholders, setInitialShareholders } = useCapTable()
   const [activeTab, setActiveTab] = useState<'upload' | 'manual'>('upload')
 
   const addShareholder = () => {
@@ -43,8 +43,9 @@ export default function DocumentsPage() {
     setInitialShareholders(newShareholders)
   }
 
-  const saveCapTable = async () => {
-    await saveShareholdersToDatabase()
+  const saveCapTable = () => {
+    console.log('Saving cap table:', initialShareholders)
+    // Here you would save the cap table data to your backend or local storage
     alert('Cap table saved!')
   }
 

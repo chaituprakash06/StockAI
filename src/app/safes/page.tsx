@@ -19,7 +19,7 @@ type Error = {
 }
 
 export default function SAFEsPage() {
-  const { safes, setSafes, saveSafeToDatabase, deleteSafeFromDatabase } = useCapTable()
+  const { safes, setSafes } = useCapTable()
   const [newSafe, setNewSafe] = useState<SAFE>({
     id: "",
     investorName: "",
@@ -51,7 +51,7 @@ export default function SAFEsPage() {
     }
   }
   
-  const addSafe = async () => {
+  const addSafe = () => {
     // Validate
     if (!newSafe.investorName || !newSafe.amount) {
       alert("Please enter investor name and investment amount")
@@ -79,14 +79,7 @@ export default function SAFEsPage() {
       id: Date.now().toString()
     }
     
-    try {
-      await saveSafeToDatabase(safeToAdd)
-      setSafes([...safes, safeToAdd])
-    } catch (error) {
-      const typedError = error as Error
-      console.error('Error adding SAFE:', typedError.message)
-      alert(`Failed to save SAFE: ${typedError.message}`)
-    }
+    setSafes([...safes, safeToAdd])
     
     // Reset form
     setNewSafe({
@@ -100,15 +93,8 @@ export default function SAFEsPage() {
     })
   }
   
-  const removeSafe = async (id: string) => {
-    try {
-      await deleteSafeFromDatabase(id)
-      setSafes(safes.filter(safe => safe.id !== id))
-    } catch (error) {
-      const typedError = error as Error
-      console.error('Error removing SAFE:', typedError.message)
-      alert(`Failed to remove SAFE: ${typedError.message}`)
-    }
+  const removeSafe = (id: string) => {
+    setSafes(safes.filter(safe => safe.id !== id))
   }
   
   const formatCurrency = (amount: number) => {
