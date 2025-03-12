@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Mail, MessageSquare, Github } from "lucide-react"; // Changed GitHub to Github (lowercase 'h')
+import { Mail, Github } from "lucide-react"; // Changed GitHub to Github (lowercase 'h')
 
 export default function ContactPage() {
   return (
@@ -35,7 +35,7 @@ export default function ContactPage() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-white/90 text-lg leading-relaxed mb-10"
           >
-            Have questions about StockAI? We're here to help! Reach out to us using any of the methods below.
+            Have questions about StockAI? We&apos;'re here to help! Reach out to us using any of the methods below.
           </motion.p>
           
           <div className="space-y-8">
