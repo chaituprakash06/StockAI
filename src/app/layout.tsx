@@ -1,42 +1,35 @@
-// src/app/layout.tsx
-import type { Metadata } from "next"
-import { Geist } from "next/font/google"
-import Sidebar from "@/components/Sidebar"
-import TopNav from "@/components/TopNav"
-import { CapTableProvider } from "@/context/CapTableContext"
-import "./globals.css"
+import { Geist } from "next/font/google";
+import { AuthProvider } from "@/lib/auth-context"; // Corrected path
+import { CapTableProvider } from "@/context/CapTableContext";
+import TopNav from "@/components/TopNav";
+import "./globals.css";
 
 const geist = Geist({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
-})
+});
 
-export const metadata: Metadata = {
-  title: "StockAI",
-  description: "Cap table management for startups",
-}
+export const metadata = {
+  title: "StockAI | AI-Powered Cap Table Management",
+  description: "Simplify your cap table management with AI.",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body className={geist.className}>
-        <CapTableProvider>
-          <div className="min-h-screen flex flex-col md:flex-row">
-            <Sidebar />
-            <div className="flex-1 flex flex-col">
-              <TopNav />
-              <main className="flex-1 bg-white">
-                {children}
-              </main>
-            </div>
-          </div>
-        </CapTableProvider>
+        <AuthProvider>
+          <CapTableProvider>
+            <TopNav />
+            <main className="pt-16">{children}</main>
+          </CapTableProvider>
+        </AuthProvider>
       </body>
     </html>
-  )
+  );
 }

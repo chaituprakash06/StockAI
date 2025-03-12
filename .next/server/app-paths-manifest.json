@@ -1,5 +1,7 @@
 {
-  "/cap-tables/page": "app/cap-tables/page.js",
   "/documents/page": "app/documents/page.js",
+  "/cap-tables/page": "app/cap-tables/page.js",
+  "/login/page": "app/login/page.js",
+  "/contact/page": "app/contact/page.js",
   "/safes/page": "app/safes/page.js"
 }
